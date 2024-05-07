@@ -11,5 +11,5 @@ data class House(
     val id: String?,
     val address: String,
     @DBRef
-    var owner: PersonDto? = null //Reference of a house relationship to a person
+    val owner: MutableList<PersonDto> = mutableListOf() //Reference of a house relationship to a person
 )

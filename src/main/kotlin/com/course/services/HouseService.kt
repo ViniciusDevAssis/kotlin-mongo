@@ -53,7 +53,7 @@ class HouseService(private val houseRepository: HouseRepository, private val per
             ResponseStatusException(HttpStatus.NOT_FOUND)
         }
         val personDto = convertPersonToPersonDto(person)
-        house.owner = personDto
+        house.owner.add(personDto)
         return houseRepository.save(house)
     }
 }

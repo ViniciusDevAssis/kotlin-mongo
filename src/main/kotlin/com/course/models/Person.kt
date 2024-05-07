@@ -13,9 +13,9 @@ data class Person(
     val name: String,
     val age: String,
     @DBRef
-    var city: CityDto? = null, //Reference of a person's relationship to a city
+    val city: MutableList<CityDto> = mutableListOf(), //Reference of a person's relationship to a city
     @DBRef
-    var house: House? = null //Reference of a person's relationship to a house
+    var house: MutableList<House> = mutableListOf() //Reference of a person's relationship to a house
 )
 
 fun convertPersonToPersonDto(person: Person): PersonDto {  //Function that converts a Person into a PersonDto

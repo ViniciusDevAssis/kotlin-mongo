@@ -54,7 +54,7 @@ class PersonService (private val personRepository: PersonRepository, private val
             ResponseStatusException(HttpStatus.NOT_FOUND)
         }
         val cityDto = convertCityToCityDto(city)
-        person.city = cityDto
+        person.city.add(cityDto)
         return personRepository.save(person)
     }
 
@@ -66,7 +66,7 @@ class PersonService (private val personRepository: PersonRepository, private val
         val person = personRepository.findById(personId).orElseThrow {
             ResponseStatusException(HttpStatus.NOT_FOUND)
         }
-        person.house = house
+        person.house.add(house)
         return personRepository.save(person)
     }
 }
