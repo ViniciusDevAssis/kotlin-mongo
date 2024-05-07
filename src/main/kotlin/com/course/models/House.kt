@@ -11,5 +11,5 @@ data class House(
     val id: String?,
     val address: String,
     @DBRef
-    val owner: PersonDto //Reference of a house relationship to a person
+    var owner: PersonDto? = null //Reference of a house relationship to a person
 )

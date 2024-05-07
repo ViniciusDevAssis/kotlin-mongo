@@ -1,13 +1,17 @@
 package com.course.services
 
 import com.course.models.Person
+import com.course.models.convertCityToCityDto
+import com.course.repositories.CityRepository
+import com.course.repositories.HouseRepository
 import com.course.repositories.PersonRepository
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.server.ResponseStatusException
 
 @Service
-class PersonService (private val personRepository: PersonRepository, private val houseService: HouseService, private val cityService: CityService){
+class PersonService (private val personRepository: PersonRepository, private val cityRepository: CityRepository, private val houseRepository: HouseRepository){
 
     fun findAll(): Iterable<Person> {
         return personRepository.findAll()
@@ -41,19 +45,28 @@ class PersonService (private val personRepository: PersonRepository, private val
         }
     }
 
-    fun assignHouseToPerson(personId: String, houseId: String): Person {
-        val person = findById(personId)
-        val house = houseService.findById(houseId)
-        return person.copy(house = house).also { updatedPerson ->
-            personRepository.save(updatedPerson)
+    @Transactional
+    fun addCityToPerson(cityId: String, personId: String): Person {
+        val city = cityRepository.findById(cityId).orElseThrow {
+            ResponseStatusException(HttpStatus.NOT_FOUND)
         }
+        val person = personRepository.findById(personId).orElseThrow {
+            ResponseStatusException(HttpStatus.NOT_FOUND)
+        }
+        val cityDto = convertCityToCityDto(city)
+        person.city = cityDto
+        return personRepository.save(person)
     }
 
-    fun assignPersonToCity(personId: String, cityId: String): Person {
-        val person = findById(personId)
-        val city = cityService.findById(cityId)
-        return person.copy(city = city).also { updatedPerson ->
-            personRepository.save(updatedPerson)
+    @Transactional
+    fun addHouseToPerson(houseId: String, personId: String): Person {
+        val house = houseRepository.findById(houseId).orElseThrow {
+            ResponseStatusException(HttpStatus.NOT_FOUND)
         }
+        val person = personRepository.findById(personId).orElseThrow {
+            ResponseStatusException(HttpStatus.NOT_FOUND)
+        }
+        person.house = house
+        return personRepository.save(person)
     }
 }

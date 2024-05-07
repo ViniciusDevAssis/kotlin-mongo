@@ -1,13 +1,17 @@
 package com.course.services
 
+import com.course.models.City
 import com.course.models.House
+import com.course.models.convertPersonToPersonDto
 import com.course.repositories.HouseRepository
+import com.course.repositories.PersonRepository
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.server.ResponseStatusException
 
 @Service
-class HouseService(private val houseRepository: HouseRepository) {
+class HouseService(private val houseRepository: HouseRepository, private val personRepository: PersonRepository) {
 
     fun findAll(): Iterable<House> {
         return houseRepository.findAll()
@@ -38,5 +42,18 @@ class HouseService(private val houseRepository: HouseRepository) {
         ).also { updatedHouse ->
             houseRepository.save(updatedHouse)
         }
+    }
+
+    @Transactional
+    fun addPersonToHouse(houseId: String, personId: String): House {
+        val house = houseRepository.findById(houseId).orElseThrow {
+            ResponseStatusException(HttpStatus.NOT_FOUND)
+        }
+        val person = personRepository.findById(personId).orElseThrow {
+            ResponseStatusException(HttpStatus.NOT_FOUND)
+        }
+        val personDto = convertPersonToPersonDto(person)
+        house.owner = personDto
+        return houseRepository.save(house)
     }
 }

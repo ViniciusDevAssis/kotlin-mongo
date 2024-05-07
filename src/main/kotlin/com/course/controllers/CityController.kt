@@ -36,4 +36,10 @@ class CityController (private val cityService: CityService){
         val updatedCity = cityService.updateCity(id, updatedFields)
         return ResponseEntity.ok(updatedCity)
     }
+
+    @PatchMapping("/{cityId}/addPerson/{personId}")
+    fun addPersonToCity(@PathVariable cityId: String, @PathVariable personId: String): ResponseEntity<City> {
+        val updatedCity = cityService.addPersonToCity(cityId, personId)
+        return ResponseEntity.ok(updatedCity)
+    }
 }
