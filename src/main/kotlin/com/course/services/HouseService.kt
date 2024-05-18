@@ -43,17 +43,4 @@ class HouseService(private val houseRepository: HouseRepository, private val per
             houseRepository.save(updatedHouse)
         }
     }
-
-    @Transactional
-    fun addPersonToHouse(houseId: String, personId: String): House {
-        val house = houseRepository.findById(houseId).orElseThrow {
-            ResponseStatusException(HttpStatus.NOT_FOUND)
-        }
-        val person = personRepository.findById(personId).orElseThrow {
-            ResponseStatusException(HttpStatus.NOT_FOUND)
-        }
-        val personDto = convertPersonToPersonDto(person)
-        house.owner.add(personDto)
-        return houseRepository.save(house)
-    }
 }

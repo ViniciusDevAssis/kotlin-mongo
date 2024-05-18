@@ -1,7 +1,6 @@
 package com.course.services
 
-import com.course.models.Person
-import com.course.models.convertCityToCityDto
+import com.course.models.*
 import com.course.repositories.CityRepository
 import com.course.repositories.HouseRepository
 import com.course.repositories.PersonRepository
@@ -45,7 +44,6 @@ class PersonService (private val personRepository: PersonRepository, private val
         }
     }
 
-    @Transactional
     fun addCityToPerson(cityId: String, personId: String): Person {
         val city = cityRepository.findById(cityId).orElseThrow {
             ResponseStatusException(HttpStatus.NOT_FOUND)
@@ -54,11 +52,13 @@ class PersonService (private val personRepository: PersonRepository, private val
             ResponseStatusException(HttpStatus.NOT_FOUND)
         }
         val cityDto = convertCityToCityDto(city)
+        val personDto = convertPersonToPersonDto(person)
+        city.people.add(personDto)
         person.city.add(cityDto)
+        cityRepository.save(city)
         return personRepository.save(person)
     }
 
-    @Transactional
     fun addHouseToPerson(houseId: String, personId: String): Person {
         val house = houseRepository.findById(houseId).orElseThrow {
             ResponseStatusException(HttpStatus.NOT_FOUND)
@@ -66,7 +66,11 @@ class PersonService (private val personRepository: PersonRepository, private val
         val person = personRepository.findById(personId).orElseThrow {
             ResponseStatusException(HttpStatus.NOT_FOUND)
         }
-        person.house.add(house)
+        val houseDto = convertHouseToHouseDto(house)
+        val personDto = convertPersonToPersonDto(person)
+        house.owner.add(personDto)
+        person.house.add(houseDto)
+        houseRepository.save(house)
         return personRepository.save(person)
     }
 }

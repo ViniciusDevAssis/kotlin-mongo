@@ -21,8 +21,8 @@ class CityController (private val cityService: CityService){
 
     @PostMapping
     fun create(@RequestBody city: City): ResponseEntity<City> {
-        cityService.createCity(city)
-        return ResponseEntity.ok().body(city)
+        val createdCity = cityService.createCity(city)
+        return ResponseEntity.ok().body(createdCity)
     }
 
     @DeleteMapping("/{id}")
@@ -34,12 +34,6 @@ class CityController (private val cityService: CityService){
     @PatchMapping("/{id}")
     fun updateCity(@PathVariable id: String, @RequestBody updatedFields: Map<String, Any?>): ResponseEntity<City> {
         val updatedCity = cityService.updateCity(id, updatedFields)
-        return ResponseEntity.ok(updatedCity)
-    }
-
-    @PatchMapping("/{cityId}/addPerson/{personId}")
-    fun addPersonToCity(@PathVariable cityId: String, @PathVariable personId: String): ResponseEntity<City> {
-        val updatedCity = cityService.addPersonToCity(cityId, personId)
         return ResponseEntity.ok(updatedCity)
     }
 }

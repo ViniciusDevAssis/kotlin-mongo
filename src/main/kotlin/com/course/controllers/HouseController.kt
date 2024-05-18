@@ -36,10 +36,4 @@ class HouseController(private val houseService: HouseService) {
         val updatedHouse = houseService.updateHouse(id, updatedFields)
         return ResponseEntity.ok(updatedHouse)
     }
-
-    @PatchMapping("/{houseId}/addCity/{personId}")
-    fun addPersonToHouse(@PathVariable houseId: String, @PathVariable personId: String): ResponseEntity<House> {
-        val updatedHouse = houseService.addPersonToHouse(houseId, personId)
-        return ResponseEntity.ok(updatedHouse)
-    }
 }

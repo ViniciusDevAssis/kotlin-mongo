@@ -45,7 +45,7 @@ class PersonController (private val personService: PersonService){
 
     @PatchMapping("/{personId}/addHouse/{houseId}")
     fun addHouseToPerson(@PathVariable personId: String, @PathVariable houseId: String): ResponseEntity<Person> {
-        val updatedPerson = personService.addCityToPerson(houseId, personId)
+        val updatedPerson = personService.addHouseToPerson(houseId, personId)
         return ResponseEntity.ok(updatedPerson)
     }
 }

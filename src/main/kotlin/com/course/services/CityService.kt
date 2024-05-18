@@ -47,17 +47,4 @@ class CityService (private val cityRepository: CityRepository, private val perso
             cityRepository.save(updatedCity)
         }
     }
-
-    @Transactional
-    fun addPersonToCity(cityId: String, personId: String): City {
-        val city = cityRepository.findById(cityId).orElseThrow {
-            ResponseStatusException(HttpStatus.NOT_FOUND)
-        }
-        val person = personRepository.findById(personId).orElseThrow {
-            ResponseStatusException(HttpStatus.NOT_FOUND)
-        }
-        val personDto = convertPersonToPersonDto(person)
-        city.people.add(personDto)
-        return cityRepository.save(city)
-    }
 }
