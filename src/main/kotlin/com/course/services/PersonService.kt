@@ -55,11 +55,15 @@ class PersonService (private val personRepository: PersonRepository, private val
         val cityDto = convertCityToCityDto(city)
         val personDto = convertPersonToPersonDto(person)
 
-        val updatedCities = person.city.toMutableList().apply { add(cityDto) }
-        val updatedPerson = person.copy(city = updatedCities)
+        val updatedCityList = person.city?.toMutableList()?.apply { add(cityDto) }
+        val updatedPerson = person.copy(
+            city = updatedCityList ?: person.city
+        )
 
-        val updatedPeople = city.people.toMutableList().apply { add(personDto) }
-        val updatedCity = city.copy(people = updatedPeople)
+        val updatedPeopleList = city.people?.toMutableList()?.apply { add(personDto) }
+        val updatedCity = city.copy(
+            people = updatedPeopleList ?: city.people
+        )
 
         cityRepository.save(updatedCity)
         return personRepository.save(updatedPerson)
@@ -76,11 +80,15 @@ class PersonService (private val personRepository: PersonRepository, private val
         val houseDto = convertHouseToHouseDto(house)
         val personDto = convertPersonToPersonDto(person)
 
-        val updatedHouses = person.house.toMutableList().apply{ add(houseDto) }
-        val updatedPerson = person.copy(house = updatedHouses)
+        val updatedHouses = person.house?.toMutableList()?.apply{ add(houseDto) }
+        val updatedPerson = person.copy(
+            house = updatedHouses ?: person.house
+        )
 
-        val updatedPeople = house.owner.toMutableList().apply { add(personDto) }
-        val updatedHouse = house.copy(owner = updatedPeople)
+        val updatedPeople = house.owner?.toMutableList()?.apply { add(personDto) }
+        val updatedHouse = house.copy(
+            owner = updatedPeople ?: house.owner
+        )
 
         houseRepository.save(updatedHouse)
         return personRepository.save(updatedPerson)

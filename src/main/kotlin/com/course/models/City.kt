@@ -14,7 +14,7 @@ data class City(
     val country: String,
     val population: String,
     @DBRef
-    val people: MutableList<PersonDto> = mutableListOf() //List of people in the city
+    val people: MutableList<PersonDto>? = mutableListOf() //List of people in the city
 )
 
 fun convertCityToCityDto(city: City): CityDto {  //Function that converts a City into a CityDto
