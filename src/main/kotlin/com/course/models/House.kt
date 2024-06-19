@@ -12,8 +12,8 @@ data class House(
     @Id
     val id: String?,
     val address: String,
-    @DBRef
-    val owner: MutableList<PersonDto>? = mutableListOf() //Reference of a house relationship to a person
+
+    val owner: MutableList<PersonDto> = mutableListOf() //Reference of a house relationship to a person
 )
 
 fun convertHouseToHouseDto(house: House): HouseDto {  //Function that converts a House into a HouseDto

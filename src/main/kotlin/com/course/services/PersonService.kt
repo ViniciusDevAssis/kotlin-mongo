@@ -55,12 +55,12 @@ class PersonService (private val personRepository: PersonRepository, private val
         val cityDto = convertCityToCityDto(city)
         val personDto = convertPersonToPersonDto(person)
 
-        val updatedCityList = person.city?.toMutableList()?.apply { add(cityDto) }
+        val updatedCityList = person.city.toMutableList().apply { add(cityDto) }
         val updatedPerson = person.copy(
             city = updatedCityList ?: person.city
         )
 
-        val updatedPeopleList = city.people?.toMutableList()?.apply { add(personDto) }
+        val updatedPeopleList = city.people.toMutableList().apply { add(personDto) }
         val updatedCity = city.copy(
             people = updatedPeopleList ?: city.people
         )
@@ -80,12 +80,12 @@ class PersonService (private val personRepository: PersonRepository, private val
         val houseDto = convertHouseToHouseDto(house)
         val personDto = convertPersonToPersonDto(person)
 
-        val updatedHouses = person.house?.toMutableList()?.apply{ add(houseDto) }
+        val updatedHouses = person.house.toMutableList().apply{ add(houseDto) }
         val updatedPerson = person.copy(
             house = updatedHouses ?: person.house
         )
 
-        val updatedPeople = house.owner?.toMutableList()?.apply { add(personDto) }
+        val updatedPeople = house.owner.toMutableList().apply { add(personDto) }
         val updatedHouse = house.copy(
             owner = updatedPeople ?: house.owner
         )
