@@ -1,5 +1,6 @@
 package com.course.controllers
 
+import com.course.controllers.dto.HouseDto
 import com.course.models.House
 import com.course.services.HouseService
 import org.springframework.http.ResponseEntity
@@ -32,8 +33,8 @@ class HouseController(private val houseService: HouseService) {
     }
 
     @PatchMapping("/{id}")
-    fun updateHouse(@PathVariable id: String, @RequestBody updatedFields: Map<String, Any?>): ResponseEntity<House> {
-        val updatedHouse = houseService.updateHouse(id, updatedFields)
+    fun updateHouse(@PathVariable id: String, @RequestBody dto: HouseDto): ResponseEntity<House> {
+        val updatedHouse = houseService.updateHouse(id, dto)
         return ResponseEntity.ok(updatedHouse)
     }
 }

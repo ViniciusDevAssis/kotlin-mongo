@@ -1,5 +1,6 @@
 package com.course.controllers
 
+import com.course.controllers.dto.CityDto
 import com.course.models.City
 import com.course.services.CityService
 import org.springframework.http.ResponseEntity
@@ -32,8 +33,8 @@ class CityController (private val cityService: CityService){
     }
 
     @PatchMapping("/{id}")
-    fun updateCity(@PathVariable id: String, @RequestBody updatedFields: Map<String, Any?>): ResponseEntity<City> {
-        val updatedCity = cityService.updateCity(id, updatedFields)
+    fun updateCity(@PathVariable id: String, @RequestBody dto: CityDto): ResponseEntity<City> {
+        val updatedCity = cityService.updateCity(id, dto)
         return ResponseEntity.ok(updatedCity)
     }
 }

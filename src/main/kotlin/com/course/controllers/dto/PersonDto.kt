@@ -2,5 +2,6 @@ package com.course.controllers.dto
 
 data class PersonDto(
     val id: String?,
-    val name: String
+    val name: String?,
+    val age: String?
 )

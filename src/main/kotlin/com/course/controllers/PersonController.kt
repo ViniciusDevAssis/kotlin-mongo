@@ -1,5 +1,6 @@
 package com.course.controllers
 
+import com.course.controllers.dto.PersonDto
 import com.course.models.Person
 import com.course.services.PersonService
 import org.springframework.http.ResponseEntity
@@ -32,20 +33,20 @@ class PersonController (private val personService: PersonService){
     }
 
     @PatchMapping("/{id}")
-    fun updatePerson(@PathVariable id: String, @RequestBody updatedFields: Map<String, Any?>): ResponseEntity<Person> {
-        val updatedPerson = personService.updatePerson(id, updatedFields)
+    fun updatePerson(@PathVariable id: String, @RequestBody dto: PersonDto): ResponseEntity<Person> {
+        val updatedPerson = personService.updatePerson(id, dto)
         return ResponseEntity.ok(updatedPerson)
     }
 
     @PatchMapping("/{personId}/addCity/{cityId}")
     fun addCityToPerson(@PathVariable personId: String, @PathVariable cityId: String): ResponseEntity<Person> {
-        val updatedPerson = personService.addCityToPerson(cityId, personId)
+        val updatedPerson = personService.addCityToPerson(personId, cityId)
         return ResponseEntity.ok(updatedPerson)
     }
 
     @PatchMapping("/{personId}/addHouse/{houseId}")
     fun addHouseToPerson(@PathVariable personId: String, @PathVariable houseId: String): ResponseEntity<Person> {
-        val updatedPerson = personService.addHouseToPerson(houseId, personId)
+        val updatedPerson = personService.addHouseToPerson(personId, houseId)
         return ResponseEntity.ok(updatedPerson)
     }
 }

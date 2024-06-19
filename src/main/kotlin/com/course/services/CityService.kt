@@ -36,15 +36,14 @@ class CityService (private val cityRepository: CityRepository, private val perso
         cityRepository.deleteById(id)
     }
 
-    fun updateCity(id: String, updatedFields: Map<String, Any?>): City {
+    fun updateCity(id: String, dto: CityDto): City {
         val existingCity = findById(id)
 
-        return existingCity.copy(
-            name = updatedFields["name"] as? String ?: existingCity.name,
-            country = updatedFields["country"] as? String ?: existingCity.country,
-            population = updatedFields["population"] as? String ?: existingCity.population
-        ).also { updatedCity ->
-            cityRepository.save(updatedCity)
-        }
+        val updatedCity = existingCity.copy(
+            name = dto.name ?: existingCity.name,
+            country = dto.country ?: existingCity.country,
+            population = dto.population ?: existingCity.population
+        )
+        return cityRepository.save(updatedCity)
     }
 }

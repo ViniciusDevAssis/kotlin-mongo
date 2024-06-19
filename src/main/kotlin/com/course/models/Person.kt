@@ -16,11 +16,13 @@ data class Person(
     @DBRef
     val city: MutableList<CityDto> = mutableListOf(), //Reference of a person's relationship to a city
     @DBRef
-    var house: MutableList<HouseDto> = mutableListOf() //Reference of a person's relationship to a house
+    val house: MutableList<HouseDto> = mutableListOf() //Reference of a person's relationship to a house
 )
 
 fun convertPersonToPersonDto(person: Person): PersonDto {  //Function that converts a Person into a PersonDto
     return PersonDto(
         id = person.id,
-        name = person.name)
+        name = person.name,
+        age = person.age
+    )
 }

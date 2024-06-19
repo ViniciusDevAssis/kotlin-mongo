@@ -1,5 +1,6 @@
 package com.course.services
 
+import com.course.controllers.dto.HouseDto
 import com.course.models.City
 import com.course.models.House
 import com.course.models.convertPersonToPersonDto
@@ -34,13 +35,13 @@ class HouseService(private val houseRepository: HouseRepository, private val per
         houseRepository.deleteById(id)
     }
 
-    fun updateHouse(id: String, updatedFields: Map<String, Any?>): House {
+    fun updateHouse(id: String, dto: HouseDto): House {
         val existingHouse = findById(id)
 
-        return existingHouse.copy(
-            address = updatedFields["address"] as? String ?: existingHouse.address
-        ).also { updatedHouse ->
-            houseRepository.save(updatedHouse)
-        }
+        val updatedHouse = existingHouse.copy(
+            address = dto.address ?: existingHouse.address
+        )
+
+        return houseRepository.save(updatedHouse)
     }
 }

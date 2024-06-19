@@ -1,12 +1,12 @@
 package com.course.services
 
+import com.course.controllers.dto.PersonDto
 import com.course.models.*
 import com.course.repositories.CityRepository
 import com.course.repositories.HouseRepository
 import com.course.repositories.PersonRepository
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
-import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.server.ResponseStatusException
 
 @Service
@@ -33,44 +33,56 @@ class PersonService (private val personRepository: PersonRepository, private val
         personRepository.deleteById(id)
     }
 
-    fun updatePerson(id: String, updatedFields: Map<String, Any?>): Person {
+    fun updatePerson(id: String, dto: PersonDto): Person {
         val existingPerson = findById(id)
 
-        return existingPerson.copy(
-            name = updatedFields["name"] as? String ?: existingPerson.name,
-            age = updatedFields["age"] as? String ?: existingPerson.age
-        ).also { updatedPerson ->
-            personRepository.save(updatedPerson)
-        }
+        val updatePerson = existingPerson.copy(
+            name = dto.name ?: existingPerson.name,
+            age = dto.age ?: existingPerson.age
+        )
+
+        return personRepository.save(updatePerson)
     }
 
-    fun addCityToPerson(cityId: String, personId: String): Person {
+    fun addCityToPerson(personId: String, cityId: String): Person {
         val city = cityRepository.findById(cityId).orElseThrow {
             ResponseStatusException(HttpStatus.NOT_FOUND)
         }
         val person = personRepository.findById(personId).orElseThrow {
             ResponseStatusException(HttpStatus.NOT_FOUND)
         }
+
         val cityDto = convertCityToCityDto(city)
         val personDto = convertPersonToPersonDto(person)
-        city.people.add(personDto)
-        person.city.add(cityDto)
-        cityRepository.save(city)
-        return personRepository.save(person)
+
+        val updatedCities = person.city.toMutableList().apply { add(cityDto) }
+        val updatedPerson = person.copy(city = updatedCities)
+
+        val updatedPeople = city.people.toMutableList().apply { add(personDto) }
+        val updatedCity = city.copy(people = updatedPeople)
+
+        cityRepository.save(updatedCity)
+        return personRepository.save(updatedPerson)
     }
 
-    fun addHouseToPerson(houseId: String, personId: String): Person {
+    fun addHouseToPerson(personId: String, houseId: String): Person {
         val house = houseRepository.findById(houseId).orElseThrow {
             ResponseStatusException(HttpStatus.NOT_FOUND)
         }
         val person = personRepository.findById(personId).orElseThrow {
             ResponseStatusException(HttpStatus.NOT_FOUND)
         }
+
         val houseDto = convertHouseToHouseDto(house)
         val personDto = convertPersonToPersonDto(person)
-        house.owner.add(personDto)
-        person.house.add(houseDto)
-        houseRepository.save(house)
-        return personRepository.save(person)
+
+        val updatedHouses = person.house.toMutableList().apply{ add(houseDto) }
+        val updatedPerson = person.copy(house = updatedHouses)
+
+        val updatedPeople = house.owner.toMutableList().apply { add(personDto) }
+        val updatedHouse = house.copy(owner = updatedPeople)
+
+        houseRepository.save(updatedHouse)
+        return personRepository.save(updatedPerson)
     }
 }
