@@ -1,15 +1,13 @@
 package com.course.services
 
 import com.course.controllers.dto.CityDto
+import com.course.enums.Errors
+import com.course.exception.NotFoundException
 import com.course.models.City
-import com.course.models.Person
-import com.course.models.convertCityToCityDto
-import com.course.models.convertPersonToPersonDto
 import com.course.repositories.CityRepository
 import com.course.repositories.PersonRepository
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
-import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.server.ResponseStatusException
 
 @Service
@@ -20,9 +18,7 @@ class CityService (private val cityRepository: CityRepository, private val perso
     }
 
     fun findById(id: String): City{
-        return cityRepository.findById(id).orElseThrow{
-            ResponseStatusException(HttpStatus.NOT_FOUND)
-        }
+        return cityRepository.findById(id).orElseThrow{ NotFoundException(Errors.C201.message.format(id), Errors.C201.code) }
     }
 
     fun createCity(city: City): City {

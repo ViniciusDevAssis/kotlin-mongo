@@ -10,12 +10,12 @@ import org.springframework.web.context.request.WebRequest
 @ControllerAdvice
 class ControllerAdvice {
 
-    @ExceptionHandler
-    fun handleHttpMessageNotReadableException(e: HttpMessageNotReadableException, request: WebRequest): ResponseEntity<ErrorResponse> {
+    @ExceptionHandler(NotFoundException::class)
+    fun handleNotFoundException(e: NotFoundException, request: WebRequest): ResponseEntity<ErrorResponse> {
         val error = ErrorResponse(
-            httpCode = 400,
-            message = "Invalid registration data",
-            internalCode = "0001",
+            HttpStatus.NOT_FOUND.value(),
+            e.message,
+            e.errorCode,
             errors = null
         )
 

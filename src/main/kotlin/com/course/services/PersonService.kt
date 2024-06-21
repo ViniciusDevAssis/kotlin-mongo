@@ -1,6 +1,8 @@
 package com.course.services
 
 import com.course.controllers.dto.PersonDto
+import com.course.enums.Errors
+import com.course.exception.NotFoundException
 import com.course.models.*
 import com.course.repositories.CityRepository
 import com.course.repositories.HouseRepository
@@ -17,9 +19,7 @@ class PersonService (private val personRepository: PersonRepository, private val
     }
 
     fun findById(id: String): Person {
-        return personRepository.findById(id).orElseThrow {
-            ResponseStatusException(HttpStatus.NOT_FOUND)
-        }
+        return personRepository.findById(id).orElseThrow { NotFoundException(Errors.C101.message.format(id), Errors.C101.code) }
     }
 
     fun createPerson(person: Person): Person {
