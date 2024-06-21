@@ -94,4 +94,8 @@ class PersonService (private val personRepository: PersonRepository, private val
         houseRepository.save(updatedHouse)
         return personRepository.save(updatedPerson)
     }
+
+    fun emailAvailable(email: String): Boolean {
+        return !personRepository.existsByEmail(email)
+    }
 }

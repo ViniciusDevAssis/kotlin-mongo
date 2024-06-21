@@ -13,6 +13,7 @@ data class Person(
     val id: String?,
     val name: String,
     val age: String,
+    val email: String,
 
     val city: MutableList<CityDto> = mutableListOf(), //Reference of a person's relationship to a city
 

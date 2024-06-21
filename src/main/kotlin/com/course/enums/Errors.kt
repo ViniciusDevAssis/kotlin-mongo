@@ -4,6 +4,8 @@ enum class Errors(
     val code: String,
     val message: String
 ) {
+    //C0XX for Native Exceptions
+    C001("C-001", "Invalid Request"),
     //C1XX for errors in the Person entity
     C101("C-0001", "Person [%s] not exists"),
 

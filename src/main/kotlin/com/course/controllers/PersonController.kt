@@ -4,6 +4,7 @@ import com.course.controllers.dto.PersonDto
 import com.course.controllers.request.PostPersonRequest
 import com.course.models.Person
 import com.course.services.PersonService
+import jakarta.validation.Valid
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
@@ -29,7 +30,7 @@ class PersonController (private val personService: PersonService){
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    fun create(@RequestBody postPersonRequest: PostPersonRequest): ResponseEntity<Person> {
+    fun create(@RequestBody @Valid postPersonRequest: PostPersonRequest): ResponseEntity<Person> {
         val person = postPersonRequest.toPerson()
         val createdPerson = personService.createPerson(person)
         return ResponseEntity.ok().body(createdPerson)
