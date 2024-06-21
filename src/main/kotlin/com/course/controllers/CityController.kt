@@ -14,7 +14,10 @@ class CityController (private val cityService: CityService){
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    fun findAll(): Iterable<City>{
+    fun findAll(@RequestParam name: String?): List<City>{
+        name?.let {
+            return cityService.findAll().filter { it.name.contains(name, ignoreCase = true) }
+        }
         return cityService.findAll()
     }
 

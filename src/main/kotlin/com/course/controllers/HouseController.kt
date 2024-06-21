@@ -14,7 +14,10 @@ class HouseController(private val houseService: HouseService) {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    fun findAll(): Iterable<House> {
+    fun findAll(@RequestParam address: String?): List<House> {
+        address?.let {
+            return houseService.findAll().filter { it.address.contains(address, ignoreCase = true) }
+        }
         return houseService.findAll()
     }
 

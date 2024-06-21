@@ -13,7 +13,7 @@ import org.springframework.web.server.ResponseStatusException
 @Service
 class CityService (private val cityRepository: CityRepository, private val personRepository: PersonRepository){
 
-    fun findAll(): Iterable<City>{
+    fun findAll(): List<City>{
         return cityRepository.findAll()
     }
 
