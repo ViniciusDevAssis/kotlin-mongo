@@ -1,6 +1,7 @@
 package com.course.controllers
 
 import com.course.controllers.dto.HouseDto
+import com.course.controllers.request.PostHouseRequest
 import com.course.models.House
 import com.course.services.HouseService
 import org.springframework.http.ResponseEntity
@@ -21,7 +22,8 @@ class HouseController(private val houseService: HouseService) {
     }
 
     @PostMapping
-    fun create(@RequestBody house: House): ResponseEntity<House> {
+    fun create(@RequestBody postHouseRequest: PostHouseRequest): ResponseEntity<House> {
+        val house = postHouseRequest.toHouse()
         val createdHouse = houseService.createHouse(house)
         return ResponseEntity.ok().body(createdHouse)
     }

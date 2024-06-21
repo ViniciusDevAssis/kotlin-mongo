@@ -1,6 +1,7 @@
 package com.course.controllers
 
 import com.course.controllers.dto.PersonDto
+import com.course.controllers.request.PostPersonRequest
 import com.course.models.Person
 import com.course.services.PersonService
 import org.springframework.http.ResponseEntity
@@ -21,7 +22,8 @@ class PersonController (private val personService: PersonService){
     }
 
     @PostMapping
-    fun create(@RequestBody person: Person): ResponseEntity<Person> {
+    fun create(@RequestBody postPersonRequest: PostPersonRequest): ResponseEntity<Person> {
+        val person = postPersonRequest.toPerson()
         val createdPerson = personService.createPerson(person)
         return ResponseEntity.ok().body(createdPerson)
     }

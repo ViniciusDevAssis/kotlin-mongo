@@ -1,6 +1,7 @@
 package com.course.controllers
 
 import com.course.controllers.dto.CityDto
+import com.course.controllers.request.PostCityRequest
 import com.course.models.City
 import com.course.services.CityService
 import org.springframework.http.ResponseEntity
@@ -21,7 +22,8 @@ class CityController (private val cityService: CityService){
     }
 
     @PostMapping
-    fun create(@RequestBody city: City): ResponseEntity<City> {
+    fun create(@RequestBody postCityRequest: PostCityRequest): ResponseEntity<City> {
+        val city = postCityRequest.toCity()
         val createdCity = cityService.createCity(city)
         return ResponseEntity.ok().body(createdCity)
     }
