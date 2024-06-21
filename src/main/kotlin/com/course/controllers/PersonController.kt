@@ -14,7 +14,10 @@ class PersonController (private val personService: PersonService){
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    fun findAll(): Iterable<Person> {
+    fun findAll(@RequestParam name: String?): List<Person> {
+        name?.let {
+            return personService.findAll().filter { it.name.contains(name, ignoreCase = true) }
+        }
         return personService.findAll()
     }
 
@@ -34,9 +37,8 @@ class PersonController (private val personService: PersonService){
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    fun deletePersonById(@PathVariable id: String): ResponseEntity<Unit> {
+    fun deletePersonById(@PathVariable id: String){
         personService.deletePersonById(id)
-        return ResponseEntity.noContent().build()
     }
 
     @PatchMapping("/{id}")

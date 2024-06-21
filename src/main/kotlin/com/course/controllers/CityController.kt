@@ -34,9 +34,8 @@ class CityController (private val cityService: CityService){
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    fun deleteCityById(@PathVariable id: String): ResponseEntity<Unit> {
+    fun deleteCityById(@PathVariable id: String){
         cityService.deleteCityById(id)
-        return ResponseEntity.noContent().build()
     }
 
     @PatchMapping("/{id}")

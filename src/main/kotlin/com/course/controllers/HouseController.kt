@@ -34,9 +34,8 @@ class HouseController(private val houseService: HouseService) {
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    fun deleteHouseById(@PathVariable id: String): ResponseEntity<Unit> {
+    fun deleteHouseById(@PathVariable id: String) {
         houseService.deleteHouseById(id)
-        return ResponseEntity.noContent().build()
     }
 
     @PatchMapping("/{id}")
