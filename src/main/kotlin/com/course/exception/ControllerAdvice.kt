@@ -18,7 +18,6 @@ class ControllerAdvice {
             e.errorCode,
             errors = null
         )
-
-        return ResponseEntity(error, HttpStatus.BAD_REQUEST)
+        return ResponseEntity(error, HttpStatus.NOT_FOUND)
     }
 }

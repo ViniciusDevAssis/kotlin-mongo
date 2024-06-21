@@ -4,6 +4,7 @@ import com.course.controllers.dto.PersonDto
 import com.course.controllers.request.PostPersonRequest
 import com.course.models.Person
 import com.course.services.PersonService
+import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
@@ -12,16 +13,19 @@ import org.springframework.web.bind.annotation.*
 class PersonController (private val personService: PersonService){
 
     @GetMapping
+    @ResponseStatus(HttpStatus.OK)
     fun findAll(): Iterable<Person> {
         return personService.findAll()
     }
 
     @GetMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
     fun findById(@PathVariable id: String): Person {
         return personService.findById(id)
     }
 
     @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     fun create(@RequestBody postPersonRequest: PostPersonRequest): ResponseEntity<Person> {
         val person = postPersonRequest.toPerson()
         val createdPerson = personService.createPerson(person)
@@ -29,24 +33,28 @@ class PersonController (private val personService: PersonService){
     }
 
     @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     fun deletePersonById(@PathVariable id: String): ResponseEntity<Unit> {
         personService.deletePersonById(id)
         return ResponseEntity.noContent().build()
     }
 
     @PatchMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
     fun updatePerson(@PathVariable id: String, @RequestBody dto: PersonDto): ResponseEntity<Person> {
         val updatedPerson = personService.updatePerson(id, dto)
         return ResponseEntity.ok(updatedPerson)
     }
 
     @PatchMapping("/{personId}/addCity/{cityId}")
+    @ResponseStatus(HttpStatus.OK)
     fun addCityToPerson(@PathVariable personId: String, @PathVariable cityId: String): ResponseEntity<Person> {
         val updatedPerson = personService.addCityToPerson(personId, cityId)
         return ResponseEntity.ok(updatedPerson)
     }
 
     @PatchMapping("/{personId}/addHouse/{houseId}")
+    @ResponseStatus(HttpStatus.OK)
     fun addHouseToPerson(@PathVariable personId: String, @PathVariable houseId: String): ResponseEntity<Person> {
         val updatedPerson = personService.addHouseToPerson(personId, houseId)
         return ResponseEntity.ok(updatedPerson)
